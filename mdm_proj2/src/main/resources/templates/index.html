@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stable Diffusion Image Generator</title>
+</head>
+<body>
+    <h1>Stable Diffusion Image Generator</h1>
+    <form id="imageGeneratorForm">
+        <input type="text" id="inputText" placeholder="Enter your text here">
+        <button type="submit">Generate Image</button>
+    </form>
+      
+    <img id="generatedImage" alt="Generated image" style="display: none;" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          document.getElementById("imageGeneratorForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let inputText = document.getElementById("inputText").value;
+            let xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                let imageUrl = URL.createObjectURL(xhr.response);
+                let imageElement = document.getElementById("generatedImage");
+                imageElement.style.display = "block"; // Display the image element
+                imageElement.src = imageUrl;
+              }
+            };
+
+            xhr.open("POST", "/api/generate-image", true);
+            xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+            xhr.responseType = "blob";
+            xhr.send(inputText);
+          });
+        });
+    </script>
+</body>
+</html>
