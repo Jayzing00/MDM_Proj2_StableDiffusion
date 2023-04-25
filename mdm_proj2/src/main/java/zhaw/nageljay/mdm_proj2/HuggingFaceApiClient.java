@@ -6,8 +6,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import java.io.IOException;
-import java.io.FileInputStream;
 import java.util.Properties;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+
 
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,26 @@ public class HuggingFaceApiClient {
 
     private static String getApiToken() {
         Properties properties = new Properties();
-        try (FileInputStream inputStream = new FileInputStream("api_key.properties")) {
+        String apiToken = null;
+    
+        try (InputStream inputStream = HuggingFaceApiClient.class.getClassLoader().getResourceAsStream("api_key.properties")) {
+            if (inputStream == null) {
+                throw new FileNotFoundException("api_key.properties not found in classpath");
+            }
             properties.load(inputStream);
+            apiToken = properties.getProperty("huggingface_api_key");
         } catch (IOException e) {
+            System.err.println("Error loading API token from api_key.properties:");
             e.printStackTrace();
         }
-        return properties.getProperty("huggingface_api_key");
+    
+        if (apiToken == null) {
+            System.err.println("API token not found or is null in api_key.properties");
+        }
+    
+        return apiToken;
     }
+    
 
     public byte[] generateImage(String prompt) {
         String apiToken = getApiToken();
@@ -31,10 +46,10 @@ public class HuggingFaceApiClient {
 
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create("{\"inputs\": \"" + prompt + "\"}", JSON);
-
+        System.out.println("APITOKEN: " + apiToken);
         Request request = new Request.Builder()
                 .url(apiUrl)
-                .header("Authorization", "Bearer" + apiToken )
+                .header("Authorization", "Bearer " + apiToken )
                 .post(body)
                 .build();
 
