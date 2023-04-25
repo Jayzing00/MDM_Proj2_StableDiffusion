@@ -7,12 +7,26 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.io.FileInputStream;
+import java.util.Properties;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class HuggingFaceApiClient {
+
+    private static String getApiToken() {
+        Properties properties = new Properties();
+        try (FileInputStream inputStream = new FileInputStream("api_key.properties")) {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties.getProperty("huggingface_api_key");
+    }
+
     public byte[] generateImage(String prompt) {
+        String apiToken = getApiToken();
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4";
 
@@ -21,7 +35,7 @@ public class HuggingFaceApiClient {
 
         Request request = new Request.Builder()
                 .url(apiUrl)
-                .header("Authorization", "Bearer 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")
+                .header("Authorization", "Bearer" + apiToken )
                 .post(body)
                 .build();
 
