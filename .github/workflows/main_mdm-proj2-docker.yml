@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://mdmproj2container.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_39f446bd06524b4c8f2cc36367552af7 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_3faa71648c024674937a49082ebc0592 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_97e01730e7bc4197b299de1a4838e341 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_cd16463a24dc4c63ad3d58240fea73d3 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: mdmproj2container.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_39f446bd06524b4c8f2cc36367552af7 }}/imageodersofragezeiche:${{ github.sha }}
+        tags: mdmproj2container.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_97e01730e7bc4197b299de1a4838e341 }}/mdm_proj2:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'mdm-proj2-docker'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_67e7cfbdaab8450bad80a33ff3f8ecdf }}
-        images: 'mdmproj2container.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_39f446bd06524b4c8f2cc36367552af7 }}/imageodersofragezeiche:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_48c7f1f774194f0d9b38774a65c7b0e1 }}
+        images: 'mdmproj2container.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_97e01730e7bc4197b299de1a4838e341 }}/mdm_proj2:${{ github.sha }}'
