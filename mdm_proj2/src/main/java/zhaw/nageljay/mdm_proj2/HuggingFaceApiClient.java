@@ -21,7 +21,7 @@ public class HuggingFaceApiClient {
 
         Request request = new Request.Builder()
                 .url(apiUrl)
-                .header("Authorization", "Bearer XXX")
+                .header("Authorization", "Bearer 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")
                 .post(body)
                 .build();
 
