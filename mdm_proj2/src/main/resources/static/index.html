@@ -32,10 +32,11 @@
               }
             };
 
-            xhr.open("POST", "/api/generate-image", true);
-            xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-            xhr.responseType = "blob";
-            xhr.send(inputText);
+            xhr.open("POST", "/generate", true);
+            xhr.responseType = 'blob';
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify({ prompt: inputText }));  // You should send data as JSON
+            
           });
         });
     </script>

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-App<mdm_proj2>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "zhaw.nageljay.mdm_proj2.App",
+            "projectName": "mdm_proj2",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
